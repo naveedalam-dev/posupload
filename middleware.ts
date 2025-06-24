@@ -2,7 +2,7 @@ import { NextResponse } from "next/server"
 import type { NextRequest } from "next/server"
 
 export function middleware(request: NextRequest) {
-  const isAuthenticated = request.cookies.has("pos_user") || localStorage.getItem("pos_user")
+  const isAuthenticated = request.cookies.has("pos_user")
   const isAuthRoute = request.nextUrl.pathname === "/login"
 
   // If the user is not authenticated and not on the login page, redirect to login
@@ -29,4 +29,3 @@ export const config = {
     "/((?!_next/static|_next/image|favicon.ico).*)",
   ],
 }
-
