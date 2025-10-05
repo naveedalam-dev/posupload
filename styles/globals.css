@@ -47,7 +47,6 @@ body {
     --sidebar-accent-foreground: 240 5.9% 10%;
     --sidebar-border: 220 13% 91%;
     --sidebar-ring: 217.2 91.2% 59.8%;
-    --font-size-base: 14px;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -91,50 +90,5 @@ body {
   }
   body {
     @apply bg-background text-foreground;
-    font-size: var(--font-size-base);
   }
-}
-
-/* Compact mode styles */
-.compact-mode {
-  --spacing-unit: 0.75rem;
-}
-
-.compact-mode .p-4 {
-  padding: calc(var(--spacing-unit) * 0.75);
-}
-
-.compact-mode .p-6 {
-  padding: var(--spacing-unit);
-}
-
-.compact-mode .gap-4 {
-  gap: calc(var(--spacing-unit) * 0.75);
-}
-
-.compact-mode .space-y-4 > * + * {
-  margin-top: calc(var(--spacing-unit) * 0.75);
-}
-
-/* High contrast mode */
-.high-contrast {
-  --border: 0 0% 0%;
-  --input: 0 0% 100%;
-  --ring: 0 0% 0%;
-}
-
-.high-contrast.dark {
-  --border: 0 0% 100%;
-  --input: 0 0% 0%;
-  --ring: 0 0% 100%;
-}
-
-/* No animations mode */
-.no-animations *,
-.no-animations *::before,
-.no-animations *::after {
-  animation-duration: 0.01ms !important;
-  animation-iteration-count: 1 !important;
-  transition-duration: 0.01ms !important;
-  scroll-behavior: auto !important;
 }

@@ -51,7 +51,7 @@ const permissionModules = [
 
 // Define role templates
 const roleTemplates = {
-  admin: permissionModules.reduce(
+  Admin: permissionModules.reduce(
     (acc, module) => {
       acc[module.name] = module.permissions.reduce(
         (perms, perm) => {
@@ -65,7 +65,7 @@ const roleTemplates = {
     {} as Record<string, Record<string, boolean>>,
   ),
 
-  manager: {
+  Manager: {
     Dashboard: { View: true, "Export Reports": true },
     Products: { View: true, Create: true, Edit: true, Delete: false, "Import/Export": true },
     Orders: { View: true, Create: true, Edit: true, Cancel: true, Refund: true, Export: true },
@@ -76,7 +76,7 @@ const roleTemplates = {
     Settings: { View: true, Edit: false },
   },
 
-  staff: {
+  Staff: {
     Dashboard: { View: true, "Export Reports": false },
     Products: { View: true, Create: false, Edit: false, Delete: false, "Import/Export": false },
     Orders: { View: true, Create: true, Edit: false, Cancel: false, Refund: false, Export: false },
@@ -87,6 +87,8 @@ const roleTemplates = {
     Settings: { View: false, Edit: false },
   },
 }
+
+type Role = "admin" | "manager" | "staff" | "custom"
 
 export function PermissionsSettings() {
   const [activeTab, setActiveTab] = useState("roles")
@@ -99,8 +101,7 @@ export function PermissionsSettings() {
   useEffect(() => {
     const initialPermissions = users.reduce(
       (acc, user) => {
-        const roleKey = user.role as keyof typeof roleTemplates
-        acc[user.id] = { ...roleTemplates[roleKey] }
+        acc[user.id] = { ...roleTemplates[user.role as Role] }
         return acc
       },
       {} as Record<string, Record<string, Record<string, boolean>>>,
@@ -138,10 +139,9 @@ export function PermissionsSettings() {
     }
 
     // Apply the role template permissions
-    const roleKey = role as keyof typeof roleTemplates
     setUserPermissions((prev) => ({
       ...prev,
-      [userId]: { ...roleTemplates[roleKey] },
+      [userId]: { ...roleTemplates[role] },
     }))
 
     // Update the user's role
@@ -159,10 +159,7 @@ export function PermissionsSettings() {
   }
 
   const savePermissions = () => {
-    if (!selectedUser) return
-
     // In a real app, this would save to the database
-    // For now, we'll just show a success message
     toast({
       title: "Permissions saved",
       description: "User permissions have been updated successfully",
@@ -303,7 +300,7 @@ export function PermissionsSettings() {
             <CardContent>
               <div className="flex flex-col gap-4">
                 <div>
-                  <Select value={selectedUser || ""} onValueChange={setSelectedUser}>
+                  <Select value={selectedUser || undefined} onValueChange={setSelectedUser}>
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select a user to edit permissions" />
                     </SelectTrigger>
@@ -380,3 +377,4 @@ export function PermissionsSettings() {
     </div>
   )
 }
+
